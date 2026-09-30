@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Find student restaurants in Finland and browse their menus."
+    />
+    <title>Student Eats Finland</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="map.js" defer></script>
+    <script src="main.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-content">
+        <div>
+          <h1>Student Eats Finland</h1>
+          <p>Discover student restaurants and menus across Finland.</p>
+        </div>
+
+        <div class="account-buttons">
+          <img id="header-avatar" class="avatar" alt="Your profile" hidden />
+          <span id="account-name"></span>
+
+          <button id="login-button" type="button">Login</button>
+          <button id="register-button" type="button">Register</button>
+          <button id="profile-button" type="button" hidden>Profile</button>
+          <button id="logout-button" type="button" hidden>Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="filters" aria-label="Find restaurants">
+        <label>
+          Restaurant name
+          <input id="search" type="search" placeholder="Search restaurant..." />
+        </label>
+
+        <label>
+          City
+          <select id="city">
+            <option value="">All Cities</option>
+          </select>
+        </label>
+
+        <label>
+          Service provider
+          <select id="provider">
+            <option value="">All Providers</option>
+          </select>
+        </label>
+      </section>
+
+      <div class="toolbar">
+        <button id="nearest-button" type="button" disabled>
+          Find nearest restaurant
+        </button>
+
+        <label class="checkbox-label">
+          <input id="favourite-only" type="checkbox" />
+          My favourite only
+        </label>
+      </div>
+
+      <p id="status" role="status"></p>
+      <button id="retry-button" type="button" hidden>Retry restaurants</button>
+
+      <div class="layout">
+        <section class="panel restaurant-panel" aria-labelledby="list-heading">
+          <div class="heading-row">
+            <h2 id="list-heading">Restaurants</h2>
+            <span id="count">0</span>
+          </div>
+
+          <div id="restaurant-list" class="restaurant-list"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="restaurant-name">
+          <div class="heading-row">
+            <h2 id="restaurant-name">Choose a restaurant</h2>
+            <button id="favourite-button" type="button" disabled>
+              Save as Favourite
+            </button>
+          </div>
+
+          <p id="restaurant-company"></p>
+          <div id="restaurant-info"></div>
+
+          <div class="menu-controls">
+            <button id="daily-button" type="button" aria-pressed="true">
+              Daily Menu
+            </button>
+
+            <button id="weekly-button" type="button" aria-pressed="false">
+              Weekly Menu
+            </button>
+
+            <label>
+              Menu language
+              <select id="language">
+                <option value="en">English</option>
+                <option value="fi">Finnish</option>
+              </select>
+            </label>
+          </div>
+
+          <section
+            id="daily-panel"
+            class="menu-box"
+            aria-labelledby="daily-heading"
+          >
+            <h3 id="daily-heading">Today's Daily Menu</h3>
+            <p id="today-label" class="date-label"></p>
+
+            <div id="daily-content" aria-live="polite">
+              <p>Select a restaurant.</p>
+            </div>
+          </section>
+
+          <section
+            id="weekly-panel"
+            class="menu-box"
+            aria-labelledby="weekly-heading"
+            hidden
+          >
+            <h3 id="weekly-heading">Weekly Overview</h3>
+
+            <div
+              id="week-calendar"
+              class="week-calendar"
+              aria-label="Choose a menu day"
+            ></div>
+
+            <div id="weekly-content" aria-live="polite">
+              <p>Select a restaurant.</p>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <section class="panel map-panel" aria-labelledby="map-heading">
+        <h2 id="map-heading">Restaurant Map Overview</h2>
+        <p>Choose a marker to view a restaurant.</p>
+
+        <div class="map-controls" aria-label="Map controls">
+          <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+          <button id="map-north" type="button">North</button>
+          <button id="map-south" type="button">South</button>
+          <button id="map-west" type="button">West</button>
+          <button id="map-east" type="button">East</button>
+          <button id="map-centre" type="button">Selected restaurant</button>
+        </div>
+
+        <p class="map-help">
+          Blue: restaurant · Green: selected · Orange border: nearest
+        </p>
+
+        <div id="map" aria-label="Restaurant location map">
+          <div id="map-tiles" aria-hidden="true"></div>
+          <div id="map-markers"></div>
+
+          <div class="map-credit">
+            ©
+            <a
+              href="https://www.openstreetmap.org/copyright"
+              target="_blank"
+              rel="noopener noreferrer"
+              >OpenStreetMap contributors</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="account-dialog" aria-labelledby="dialog-title">
+      <div class="heading-row">
+        <h2 id="dialog-title">Account</h2>
+        <button id="close-dialog" type="button">Close</button>
+      </div>
+
+      <p id="account-status" role="status"></p>
+
+      <a id="activation-link" target="_blank" rel="noopener noreferrer" hidden
+        >Activate your account</a
+      >
+
+      <form id="login-form" hidden>
+        <label>
+          Username
+          <input name="username" autocomplete="username" required />
+        </label>
+
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="register-form" hidden>
+        <label>
+          Username
+          <input name="username" autocomplete="username" required />
+        </label>
+
+        <button id="check-username" type="button">
+          Check username availability
+        </button>
+
+        <label>
+          Email
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+          />
+        </label>
+
+        <button type="submit">Create account</button>
+      </form>
+
+      <div id="profile-section" hidden>
+        <img
+          id="profile-avatar"
+          class="profile-avatar"
+          alt="Your profile"
+          hidden
+        />
+
+        <form id="profile-form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" required />
+          </label>
+
+          <label>
+            Email
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+
+          <label>
+            New password — leave empty to keep your current password
+            <input
+              name="password"
+              type="password"
+              autocomplete="new-password"
+            />
+          </label>
+
+          <button type="submit">Save profile</button>
+        </form>
+
+        <form id="avatar-form">
+          <label>
+            Profile picture
+            <input name="avatar" type="file" accept="image/*" required />
+          </label>
+
+          <button type="submit">Upload picture</button>
+        </form>
+      </div>
+    </dialog>
+
+    <footer>
+      <p>Student Eats Finland · Metropolia UAS</p>
+    </footer>
+  </body>
+</html>
