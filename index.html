@@ -9,11 +9,12 @@
     />
     <title>Student Eats Finland</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="map.js" defer></script>
-    <script src="main.js" defer></script>
   </head>
 
   <body>
+    <script defer src="./map.js"></script>
+    <script type="module" src="./js/main.js"></script>
+
     <header>
       <div class="header-content">
         <div>
@@ -22,7 +23,13 @@
         </div>
 
         <div class="account-buttons">
-          <img id="header-avatar" class="avatar" alt="Your profile" hidden />
+          <img
+            id="header-avatar"
+            class="avatar"
+            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+            alt="Your profile"
+            hidden
+          />
           <span id="account-name"></span>
 
           <button id="login-button" type="button">Login</button>
@@ -132,6 +139,7 @@
             <div
               id="week-calendar"
               class="week-calendar"
+              role="group"
               aria-label="Choose a menu day"
             ></div>
 
@@ -146,7 +154,7 @@
         <h2 id="map-heading">Restaurant Map Overview</h2>
         <p>Choose a marker to view a restaurant.</p>
 
-        <div class="map-controls" aria-label="Map controls">
+        <div class="map-controls" role="group" aria-label="Map controls">
           <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
           <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
           <button id="map-north" type="button">North</button>
@@ -160,7 +168,7 @@
           Blue: restaurant · Green: selected · Orange border: nearest
         </p>
 
-        <div id="map" aria-label="Restaurant location map">
+        <div id="map" role="region" aria-label="Restaurant location map">
           <div id="map-tiles" aria-hidden="true"></div>
           <div id="map-markers"></div>
 
@@ -185,7 +193,12 @@
 
       <p id="account-status" role="status"></p>
 
-      <a id="activation-link" target="_blank" rel="noopener noreferrer" hidden
+      <a
+        id="activation-link"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden
         >Activate your account</a
       >
 
@@ -240,6 +253,7 @@
         <img
           id="profile-avatar"
           class="profile-avatar"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           alt="Your profile"
           hidden
         />
